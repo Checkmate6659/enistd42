@@ -13,8 +13,8 @@ extern "C" {
 #define _PILE_EXPONENT__ 2 //Exponent of how much data to reallocate when growing
 #define _PILE_DEFAULT_CAPACITY__ 8 //Initial capacity of the pile
 
-#define MAX(a, b) ((a)>(b)?(a):(b)) //Calculates maximum of 2 numbers.
-#define MIN(a, b) ((a)<(b)?(a):(b)) //Calculates minimum of 2 numbers.
+#define MAX(a, b) ((a)>(b)?(a):(b)) //Calculates maximum of 2 numbers. NOTE: they are evaluated twice, so MAX(x++, x++) may lead to x being incremented 4 times.
+#define MIN(a, b) ((a)<(b)?(a):(b)) //Calculates minimum of 2 numbers. NOTE: they are evaluated twice, so MIN(x++, x++) may lead to x being incremented 4 times.
 #define ASSERT(b, msg) {if(!(b)){printf("Assertion failed: %s, l%d: %s\n", __FILE__, __LINE__, (msg));exit(1);}} //ASSERT(you_know_what_this_does, "you really don't?");
 
 //A pile of data. The data type is defined manually.
