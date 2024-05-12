@@ -1,5 +1,5 @@
-#ifndef __ENISTD42_INCL__
-#define __ENISTD42_INCL__
+#ifndef _ENISTD42_INCL__
+#define _ENISTD42_INCL__
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,8 +10,8 @@
 extern "C" {
 #endif
 
-#define __PILE_EXPONENT__ 2 //Exponent of how much data to reallocate when growing
-#define __PILE_DEFAULT_CAPACITY__ 8 //Initial capacity of the pile
+#define _PILE_EXPONENT__ 2 //Exponent of how much data to reallocate when growing
+#define _PILE_DEFAULT_CAPACITY__ 8 //Initial capacity of the pile
 
 #define MAX(a, b) ((a)>(b)?(a):(b)) //Calculates maximum of 2 numbers.
 #define MIN(a, b) ((a)<(b)?(a):(b)) //Calculates minimum of 2 numbers.
@@ -38,8 +38,8 @@ void* malloc_s(unsigned long n)
     return data;
 }
 
-#define INIT_PILE(dtype) {__PILE_DEFAULT_CAPACITY__, sizeof(dtype), 0, 0, malloc_s(__PILE_DEFAULT_CAPACITY__ * sizeof(dtype))} //Initialize an empty pile with data type dtype.
-#define INIT_PILE_FROM(dtype, n, data) {MAX((n), __PILE_DEFAULT_CAPACITY__), sizeof(dtype), 0, (n), memcpy(malloc_s(sizeof(dtype) * MAX((n), __PILE_DEFAULT_CAPACITY__)), (void*)(data), (n) * sizeof(dtype))} //Initialize by copying given data. Arguments are dtype (data type), n (number of elements), data (pointer to data)
+#define INIT_PILE(dtype) {_PILE_DEFAULT_CAPACITY__, sizeof(dtype), 0, 0, malloc_s(_PILE_DEFAULT_CAPACITY__ * sizeof(dtype))} //Initialize an empty pile with data type dtype.
+#define INIT_PILE_FROM(dtype, n, data) {MAX((n), _PILE_DEFAULT_CAPACITY__), sizeof(dtype), 0, (n), memcpy(malloc_s(sizeof(dtype) * MAX((n), _PILE_DEFAULT_CAPACITY__)), (void*)(data), (n) * sizeof(dtype))} //Initialize by copying given data. Arguments are dtype (data type), n (number of elements), data (pointer to data)
 #define PILE_LENGTH(p) ((unsigned long)((long)(p).back - (long)(p).front)) //Get length of the pile p
 
 //Push back an element on the pile. The address of the element has to be given.
@@ -49,7 +49,7 @@ void increase_if_full(Pile* p)
     if(p->back == p->front + p->capacity)
     {
         //increase capacity
-        p->capacity *= __PILE_EXPONENT__;
+        p->capacity *= _PILE_EXPONENT__;
 
         //reallocate data
         p->data = realloc(p->data, p->capacity);
@@ -91,7 +91,7 @@ void shrink_to_fit(Pile *p)
 
 //Return the same pile as in the argument. Throw an error and stop execution if p is empty. Also handles reducing front and back when wrapping in PILE_POP_FRONT.
 //This function should not be used outside the library macros.
-Pile* __throw_if_empty_and_handle_pop_front_wrapping__(Pile* p, char pop_front)
+Pile* _throw_if_empty_and_handle_pop_front_wrapping__(Pile* p, char pop_front)
 {
     if(!PILE_LENGTH(*p))
     {
@@ -106,8 +106,8 @@ Pile* __throw_if_empty_and_handle_pop_front_wrapping__(Pile* p, char pop_front)
     return p;
 }
 
-#define PILE_POP_BACK(p, dtype) (((dtype*)(p).data)[--__throw_if_empty_and_handle_pop_front_wrapping__(&p, 0)->back%(p).capacity]) //Pop an element of type dtype from the back pf p. Prints an error message if p is empty.
-#define PILE_POP_FRONT(p, dtype) (((dtype*)(p).data)[((__throw_if_empty_and_handle_pop_front_wrapping__(&p, 1)->front++)+(p).capacity)%(p).capacity]) //Pop an element of type dtype from the front pf p. Prints an error message if p is empty.
+#define PILE_POP_BACK(p, dtype) (((dtype*)(p).data)[--_throw_if_empty_and_handle_pop_front_wrapping__(&p, 0)->back%(p).capacity]) //Pop an element of type dtype from the back pf p. Prints an error message if p is empty.
+#define PILE_POP_FRONT(p, dtype) (((dtype*)(p).data)[((_throw_if_empty_and_handle_pop_front_wrapping__(&p, 1)->front++)+(p).capacity)%(p).capacity]) //Pop an element of type dtype from the front pf p. Prints an error message if p is empty.
 
 #ifdef __cplusplus
 }
